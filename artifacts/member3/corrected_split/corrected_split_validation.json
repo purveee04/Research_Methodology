@@ -1,0 +1,76 @@
+{
+  "status": "PASS_CONSERVATIVE_GEOMETRIC_GUARD",
+  "n_pairs_checked": 253,
+  "n_components": 17426,
+  "n_multi_image_groups": 243,
+  "sizes": {
+    "pool": 14217,
+    "lab": 1777,
+    "unl_pool": 12440,
+    "val": 1727,
+    "test": 1731
+  },
+  "class_counts": {
+    "pool": [
+      867,
+      1519,
+      2121,
+      1621,
+      268,
+      1634,
+      1464,
+      2089,
+      1138,
+      1496
+    ],
+    "lab": [
+      108,
+      190,
+      265,
+      203,
+      34,
+      204,
+      183,
+      261,
+      142,
+      187
+    ],
+    "unl_pool": [
+      759,
+      1329,
+      1856,
+      1418,
+      234,
+      1430,
+      1281,
+      1828,
+      996,
+      1309
+    ],
+    "val": [
+      106,
+      169,
+      257,
+      202,
+      32,
+      203,
+      179,
+      255,
+      140,
+      184
+    ],
+    "test": [
+      108,
+      165,
+      262,
+      198,
+      33,
+      203,
+      180,
+      256,
+      141,
+      185
+    ]
+  },
+  "warning": "Geometric grouping is conservative, not manual confirmation of duplicates; external cutouts not included; prior checkpoints must not be used to evaluate this split."
+}

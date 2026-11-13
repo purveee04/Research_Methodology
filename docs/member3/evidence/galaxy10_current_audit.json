@@ -1,0 +1,387 @@
+{
+  "blank_images": {
+    "indices": [
+      11475
+    ],
+    "n": 1
+  },
+  "data_settings": {
+    "include_labelled_in_unlabeled": false,
+    "label_frac": 0.125,
+    "no_pool_unlabeled": false,
+    "split_seed": 16,
+    "test_frac": 0.1,
+    "val_frac": 0.1
+  },
+  "duplicates": {
+    "groups_across_splits_listed": [],
+    "groups_listed": [],
+    "n_duplicate_groups": 0,
+    "n_extra_copies": 0,
+    "n_groups_across_splits": 0,
+    "n_groups_touching_val_or_test": 0,
+    "n_groups_with_conflicting_labels": 0
+  },
+  "file": {
+    "channels": 3,
+    "class_counts": [
+      1081,
+      1853,
+      2640,
+      2021,
+      333,
+      2040,
+      1823,
+      2600,
+      1419,
+      1865
+    ],
+    "dec": {
+      "length_matches_images": true,
+      "max": 69.76712799072266,
+      "median": 22.9924259185791,
+      "min": -19.05389984073398,
+      "n": 17675,
+      "n_nan": 0
+    },
+    "file": {
+      "sha256": "a75906f8e3eae0150e3c9de48c7dd74faae3a823130e0030d27d6866a8ffbed4",
+      "size": 2726423918
+    },
+    "has_labels": true,
+    "has_pxscale": true,
+    "has_ra_dec": true,
+    "height": 256,
+    "keys": {
+      "ans": {
+        "dtype": "uint8",
+        "shape": [
+          17675
+        ]
+      },
+      "dec": {
+        "dtype": "float64",
+        "shape": [
+          17675
+        ]
+      },
+      "images": {
+        "dtype": "uint8",
+        "shape": [
+          17675,
+          256,
+          256,
+          3
+        ]
+      },
+      "pxscale": {
+        "dtype": "float64",
+        "shape": [
+          17675
+        ]
+      },
+      "ra": {
+        "dtype": "float64",
+        "shape": [
+          17675
+        ]
+      },
+      "redshift": {
+        "dtype": "float64",
+        "shape": [
+          17675
+        ]
+      }
+    },
+    "label_range": [
+      0,
+      9
+    ],
+    "loader_crop_hw": [
+      192,
+      192
+    ],
+    "loader_crop_is_192": true,
+    "n_images": 17675,
+    "path": "/kaggle/working/galaxy_data/Galaxy10_DECals_NoDuplicated.h5",
+    "pxscale": {
+      "length_matches_images": true,
+      "max": 0.524,
+      "median": 0.262,
+      "min": 0.262,
+      "n": 17675,
+      "n_nan": 0
+    },
+    "ra": {
+      "length_matches_images": true,
+      "max": 359.95124914658606,
+      "median": 188.0340118408203,
+      "min": 0.0072686503074837,
+      "n": 17675,
+      "n_nan": 0
+    },
+    "redshift": {
+      "length_matches_images": true,
+      "max": 1.441647,
+      "median": 0.07344477,
+      "min": -0.0001244358,
+      "n": 17675,
+      "n_nan": 92
+    },
+    "size_bytes": 2726423918,
+    "width": 256
+  },
+  "membership": {
+    "class_counts": {
+      "lab": [
+        108,
+        185,
+        264,
+        202,
+        34,
+        204,
+        182,
+        260,
+        142,
+        186
+      ],
+      "pool": [
+        865,
+        1482,
+        2112,
+        1617,
+        267,
+        1632,
+        1458,
+        2080,
+        1135,
+        1491
+      ],
+      "test": [
+        108,
+        186,
+        264,
+        202,
+        33,
+        204,
+        182,
+        260,
+        142,
+        187
+      ],
+      "unl_pool": [
+        757,
+        1297,
+        1848,
+        1415,
+        233,
+        1428,
+        1276,
+        1820,
+        993,
+        1305
+      ],
+      "val": [
+        108,
+        185,
+        264,
+        202,
+        33,
+        204,
+        183,
+        260,
+        142,
+        187
+      ]
+    },
+    "include_labelled_in_unlabeled": false,
+    "max_class_share_deviation": {
+      "lab": 0.0004014827871339187,
+      "pool": 6.32635783356511e-05,
+      "test": 0.0003662790325574261,
+      "unl_pool": 3.614952045294384e-05,
+      "val": 0.00036675904177359275
+    },
+    "n_images": 17675,
+    "ok": true,
+    "overlaps": {
+      "lab&test": 0,
+      "lab&unl_pool": 0,
+      "lab&val": 0,
+      "pool&test": 0,
+      "pool&val": 0,
+      "unl_pool&test": 0,
+      "unl_pool&val": 0,
+      "val&test": 0
+    },
+    "problems": [],
+    "sizes": {
+      "lab": 1767,
+      "pool": 14139,
+      "test": 1768,
+      "unl_pool": 12372,
+      "val": 1768
+    }
+  },
+  "sky_overlap_inside_galaxy10": {
+    "centre_arcsec": 3.0,
+    "footprint_192": {
+      "n_pairs": 63,
+      "n_pool_galaxies_overlapping_val_test": 63,
+      "n_val_test_pairs": 3
+    },
+    "footprint_256": {
+      "n_pairs": 78,
+      "n_pool_galaxies_overlapping_val_test": 78,
+      "n_val_test_pairs": 3
+    },
+    "n_pool_centre_within_val_test": 3,
+    "pool_indices_flagged_by_footprint": {
+      "192": [
+        2490,
+        2933,
+        10019,
+        1769,
+        2086,
+        11529,
+        4039,
+        1809,
+        1397,
+        12708,
+        12739,
+        2409,
+        2400,
+        14731,
+        1402,
+        1324,
+        1905,
+        17475,
+        2020,
+        2797,
+        8031,
+        13348,
+        1771,
+        5760,
+        1490,
+        2335,
+        2332,
+        16092,
+        1951,
+        2780,
+        12751,
+        16062,
+        14664,
+        2022,
+        2006,
+        1391,
+        4273,
+        1619,
+        2514,
+        8879,
+        11452,
+        1683,
+        15634,
+        1859,
+        5725,
+        1015,
+        2795,
+        2268,
+        9024,
+        2145,
+        2341,
+        12517,
+        2244,
+        15508,
+        9539,
+        1471,
+        2349,
+        2098,
+        4933,
+        15065,
+        5612,
+        15898,
+        12087
+      ],
+      "256": [
+        5655,
+        2490,
+        2933,
+        10019,
+        1769,
+        9668,
+        2086,
+        11529,
+        4039,
+        1809,
+        1397,
+        12708,
+        12739,
+        2455,
+        13874,
+        2409,
+        2400,
+        14731,
+        1402,
+        1324,
+        1905,
+        6797,
+        17475,
+        17504,
+        2020,
+        2797,
+        8031,
+        13348,
+        1771,
+        2960,
+        5760,
+        1490,
+        847,
+        2335,
+        2332,
+        16092,
+        5589,
+        1951,
+        2780,
+        12751,
+        16062,
+        14664,
+        3497,
+        2022,
+        2006,
+        1391,
+        4273,
+        1619,
+        2514,
+        8879,
+        11452,
+        1683,
+        15634,
+        1859,
+        5725,
+        6845,
+        1015,
+        2795,
+        2268,
+        16451,
+        9024,
+        2145,
+        4479,
+        2341,
+        12517,
+        2244,
+        15508,
+        9539,
+        1471,
+        1307,
+        2349,
+        2098,
+        4933,
+        15065,
+        5612,
+        15898,
+        12087,
+        14534
+      ]
+    }
+  }
+}
