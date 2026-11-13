@@ -1,0 +1,10 @@
+M3.2 CANDIDATE CORRECTED SPLIT - NOT AUTOMATICALLY APPROVED
+
+Dataset sha256: a75906f8e3eae0150e3c9de48c7dd74faae3a823130e0030d27d6866a8ffbed4
+Original split sha256: 54e7112a6ac1d297ca8d18d88a499dc088e070401e9e6617173b379a7d21e37d
+Corrected split: corrected_split_indices.npz
+Sizes: {'pool': 14217, 'lab': 1777, 'unl_pool': 12440, 'val': 1727, 'test': 1731}
+PASS_CONSERVATIVE_GEOMETRIC_GUARD
+Geometric grouping is conservative, not manual confirmation of duplicates; external cutouts not included; prior checkpoints must not be used to evaluate this split.
+
+IMPORTANT: Member 2 must explicitly load and validate these indices before starting ANY training. Existing build_data/split_indices random generation is not automatically overridden by saving this file. BOTH A and B must train from scratch with this same corrected split.

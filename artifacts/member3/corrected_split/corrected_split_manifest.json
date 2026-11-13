@@ -1,0 +1,2551 @@
+{
+  "policy": "Keep all connected components of circumscribed-circle sky overlaps (256px, per-row pxscale) within one split; choose original majority assignment, tie pool>val>test. Relabel training-only samples to ~12.5% per class. Conservative proxy, not visually confirmed duplicates.",
+  "footprint_px": 256,
+  "dataset_sha256": "a75906f8e3eae0150e3c9de48c7dd74faae3a823130e0030d27d6866a8ffbed4",
+  "original_split_sha256": "54e7112a6ac1d297ca8d18d88a499dc088e070401e9e6617173b379a7d21e37d",
+  "original_audit_sha256": "13c32c3e2d630d19fc66932ba5e90823015351d137179992d2e692f50ebdc0ed",
+  "original_sizes": {
+    "pool": 14139,
+    "lab": 1767,
+    "unl_pool": 12372,
+    "val": 1768,
+    "test": 1768
+  },
+  "corrected_sizes": {
+    "pool": 14217,
+    "lab": 1777,
+    "unl_pool": 12440,
+    "val": 1727,
+    "test": 1731
+  },
+  "indices_changed_partition": [
+    167,
+    1009,
+    1304,
+    1306,
+    1349,
+    1390,
+    1401,
+    1439,
+    1445,
+    1509,
+    1640,
+    1707,
+    1734,
+    1801,
+    1975,
+    2030,
+    2033,
+    2050,
+    2119,
+    2160,
+    2195,
+    2199,
+    2207,
+    2213,
+    2230,
+    2252,
+    2257,
+    2308,
+    2342,
+    2393,
+    2420,
+    2444,
+    2489,
+    2520,
+    2581,
+    2731,
+    2774,
+    2802,
+    2856,
+    2866,
+    3030,
+    3054,
+    3391,
+    4108,
+    4299,
+    4739,
+    4768,
+    5518,
+    5559,
+    5724,
+    5793,
+    6077,
+    7105,
+    7119,
+    7856,
+    8839,
+    9076,
+    10018,
+    10057,
+    10370,
+    10499,
+    10949,
+    11222,
+    11810,
+    11891,
+    12021,
+    12296,
+    12339,
+    13207,
+    13218,
+    13425,
+    13664,
+    14212,
+    15014,
+    15466,
+    15551,
+    16626,
+    16892,
+    17185,
+    17231,
+    17332
+  ],
+  "n_changed_partition": 81,
+  "n_pairs": 253,
+  "n_original_cross_partition_edges": 81,
+  "n_group_components": 17426,
+  "groups_multiple_images": [
+    {
+      "group_id": 149,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 167,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 259,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 333,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 406,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 528,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 755,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 823,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 847,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1006,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1009,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1012,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1072,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1090,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1096,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1097,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1118,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1129,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1171,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1269,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1274,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1304,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1306,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1324,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1330,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1335,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1347,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1349,
+      "size": 2,
+      "old_counts": {
+        "pool": 0,
+        "val": 1,
+        "test": 1
+      },
+      "assigned": "val"
+    },
+    {
+      "group_id": 1369,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1390,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1401,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1423,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1439,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1471,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1489,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1490,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1501,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1509,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1512,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1521,
+      "size": 3,
+      "old_counts": {
+        "pool": 3,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1550,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1565,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1567,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1576,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1582,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1611,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1619,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1623,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1624,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1640,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1683,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1685,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1707,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1765,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1767,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1769,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1771,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1783,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1850,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1859,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1862,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1951,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1970,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1975,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1982,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1983,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1984,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1993,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 1994,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2019,
+      "size": 3,
+      "old_counts": {
+        "pool": 3,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2020,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2022,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2025,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2029,
+      "size": 3,
+      "old_counts": {
+        "pool": 3,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2038,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2043,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2051,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2065,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2074,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2086,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2098,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2118,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2119,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2132,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2138,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2145,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2151,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2157,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2161,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2163,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2171,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2179,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2186,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2195,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2199,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2207,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2230,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2233,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2234,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2244,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2250,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2252,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2257,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2267,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2273,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2277,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2282,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2290,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2341,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2378,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2393,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2409,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2420,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2428,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2455,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2514,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2537,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2597,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2681,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2696,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2722,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2731,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2774,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2866,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2884,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2895,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2904,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2907,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2933,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2938,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2960,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 2961,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3011,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3029,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3030,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3036,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3054,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3219,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3323,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3362,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3364,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3391,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3412,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3497,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3636,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3639,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 3977,
+      "size": 3,
+      "old_counts": {
+        "pool": 3,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4070,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4092,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4099,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4108,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4136,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4224,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4260,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4288,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4299,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4438,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4659,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4675,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4717,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4739,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4768,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4813,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 4999,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5028,
+      "size": 2,
+      "old_counts": {
+        "pool": 0,
+        "val": 2,
+        "test": 0
+      },
+      "assigned": "val"
+    },
+    {
+      "group_id": 5116,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5152,
+      "size": 3,
+      "old_counts": {
+        "pool": 3,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5518,
+      "size": 3,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5598,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5612,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5724,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5769,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5811,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5844,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 5999,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6077,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6224,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6285,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6382,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6405,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6419,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6446,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 6651,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 7054,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 7105,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 7119,
+      "size": 2,
+      "old_counts": {
+        "pool": 0,
+        "val": 1,
+        "test": 1
+      },
+      "assigned": "val"
+    },
+    {
+      "group_id": 7195,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 7231,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 7547,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 7745,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 7856,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8031,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8097,
+      "size": 2,
+      "old_counts": {
+        "pool": 0,
+        "val": 2,
+        "test": 0
+      },
+      "assigned": "val"
+    },
+    {
+      "group_id": 8235,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8464,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8552,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8747,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8839,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8865,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 8879,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 9399,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 9539,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10005,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10007,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10018,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10047,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10054,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10082,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10370,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10499,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10526,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 10541,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 11024,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 11222,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 11452,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 11939,
+      "size": 2,
+      "old_counts": {
+        "pool": 0,
+        "val": 1,
+        "test": 1
+      },
+      "assigned": "val"
+    },
+    {
+      "group_id": 12001,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 12019,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 12021,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 12087,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 12512,
+      "size": 2,
+      "old_counts": {
+        "pool": 0,
+        "val": 2,
+        "test": 0
+      },
+      "assigned": "val"
+    },
+    {
+      "group_id": 12570,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 12743,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 12763,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 12907,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 13009,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 13207,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 13226,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 13348,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14212,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14451,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14519,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14554,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14664,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14731,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14752,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14791,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 14854,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 15466,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 15533,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 16062,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 1,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 16508,
+      "size": 2,
+      "old_counts": {
+        "pool": 2,
+        "val": 0,
+        "test": 0
+      },
+      "assigned": "pool"
+    },
+    {
+      "group_id": 17332,
+      "size": 2,
+      "old_counts": {
+        "pool": 1,
+        "val": 0,
+        "test": 1
+      },
+      "assigned": "pool"
+    }
+  ],
+  "blank_images_from_original_audit": {
+    "indices": [
+      11475
+    ],
+    "n": 1
+  },
+  "unresolved": "Manual classification of geometric overlaps, one constant-value image, dataset version comparison, and external cutout provenance; require team signoff before final training.",
+  "created_utc": "2026-11-12T14:24:10.907140+00:00",
+  "split_seed": 16,
+  "label_frac": 0.125,
+  "source": "/kaggle/working/galaxy_data/Galaxy10_DECals_NoDuplicated.h5"
+}
