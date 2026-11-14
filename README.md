@@ -59,7 +59,31 @@ Note: This measures Generator forward and backward computations only. It does no
 
 ### 6. Next Steps
 
-- Integrate the Generator with the updated training pipeline.
+- Run short A/B pilots after the integrated trainer and corrected split pass team review.
 - Evaluate generated galaxy images.
 - Compare Experiments A and B.
 - Evaluate denoising performance using validation data.
+
+## Member 2 – Corrected-Split Training Integration
+
+The Member 2 trainer now requires the corrected split files from
+`artifacts/member3/corrected_split/`. It verifies the dataset SHA-256 against the split manifest,
+checks the split arrays, sizes, class counts and geometric groups against the validation report,
+and records the split and dataset fingerprints in each run's provenance. Validation and test arrays
+are held out for evaluation and are not passed to the training batch source. External cutouts are
+excluded; the unlabelled stream uses only the corrected Galaxy10 training pool.
+
+Image 11475 is retained in the unlabelled training pool, following the team's 13 November decision.
+The trainer records its class and raw pixel range and number of distinct pixel values in
+`split_audit.json` when run against the Galaxy10 HDF5 file.
+
+The best classifier checkpoint is selected using validation macro-F1. No A/B pilot or full training
+run has been performed by this integration update. The corrected split is still subject to final
+team review; the trainer requires `--confirm-split-review` after that review before it will start.
+The dataset SHA-256 and image 11475 pixel details must still be confirmed in the Kaggle environment
+using the actual HDF5 dataset.
+
+Local verification after the corrected-split changes: **82 unit tests ran, 61 passed and 21 TensorFlow
+tests were skipped** because TensorFlow and the Generator dependency are unavailable in this
+environment. The shipped Member 3 NPZ, manifest and validation report passed a structural compatibility
+check with the trainer. This did not verify the Galaxy10 HDF5 checksum or run the TensorFlow trainer.
