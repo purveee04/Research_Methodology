@@ -70,16 +70,16 @@ REFRESH_MODES = ("every_step", "every_n_steps")
 # team-approved, NOT instructor-approved, and NOT tuned.  Change them in the launch command.
 # --------------------------------------------------------------------------- #
 PROVISIONAL = {
-    "img_size":            "only completed baseline is 96x96; 192 untested with the new generator",
-    "n_unlabeled":         "team guide: 20 'for now', may be tuned",
-    "n_labeled":           "team guide: 1 'for now', may be tuned",
-    "sigma":               "no sigma approved; choose on validation pilots, then freeze",
-    "lambda_rec":          "NO DEFAULT: required for Experiment B, must be unset for A",
-    "pseudo_threshold":    "no value was ever specified",
-    "pseudo_refresh":      "live classifier at the start of every step",
-    "pseudo_refresh_every": "only used when pseudo_refresh == 'every_n_steps'",
-    "pseudo_loss_weight":  "how the pseudo-label CE is weighted against the labelled CE is undecided",
-    "exhaustion_policy":   "baseline sampled with replacement forever; 20:1 epoch behaviour undecided",
+    "img_size":             "team-agreed 96x96",
+    "n_unlabeled":          "team-agreed 20 per step",
+    "n_labeled":            "team-agreed 1 per step",
+    "sigma":                "team-agreed 0.1",
+    "lambda_rec":           "team-agreed 1.0 for B; unset for A",
+    "pseudo_threshold":     "team-agreed 0.95",
+    "pseudo_refresh":       "team-agreed every step",
+    "pseudo_refresh_every": "unused unless every_n_steps is selected",
+    "pseudo_loss_weight":   "team-agreed 1.0",
+    "exhaustion_policy":    "reshuffle default; not explicitly agreed in the latest settings",
 }
 
 
@@ -145,9 +145,17 @@ def _choice(name, value, choices):
 
 
 def provisional_report(cfg):
-    """Lines for the launch banner: every PROVISIONAL value actually in use."""
-    return ["  %-22s = %-12s  PROVISIONAL (not approved): %s" % (k, getattr(cfg, k), why)
-            for k, why in PROVISIONAL.items()]
+    """Lines for the launch banner, distinguishing team-agreed values from provisional choices."""
+    lines = []
+    for key, note in PROVISIONAL.items():
+        if note.startswith("team-agreed "):
+            status, detail = "TEAM-AGREED", note[len("team-agreed "):]
+        elif note.startswith("unused "):
+            status, detail = "INFO", note[len("unused "):]
+        else:
+            status, detail = "PROVISIONAL", note
+        lines.append("  %-22s = %-12s  %s: %s" % (key, getattr(cfg, key), status, detail))
+    return lines
 
 
 # --------------------------------------------------------------------------- #
@@ -158,8 +166,7 @@ class ResumeError(RuntimeError):
 
 
 MANIFEST_FORMAT = 2
-DATA_SETTING_KEYS = ("split_seed", "test_frac", "val_frac", "label_frac",
-                     "include_labelled_in_unlabeled", "no_pool_unlabeled")
+DATA_SETTING_KEYS = ("split_source", "include_external_cutouts", "include_labelled_in_unlabeled")
 IDENTITY_KEYS = ("labeled_file", "unlabeled_file", "labels", "idx_pool", "idx_lab",
                  "idx_val", "idx_test", "idx_unl_pool")
 
@@ -183,6 +190,102 @@ def file_fingerprint(path, chunk=1 << 24):
     return {"size": size, "sha256": h.hexdigest()}
 
 
+def load_corrected_split(npz_path, manifest_path, validation_path, labels, dataset_path):
+    """Load and validate Member 3's corrected split before any training starts.
+
+    The manifest's dataset SHA-256 must match the actual labelled HDF5 file. The NPZ must
+    contain a complete, disjoint pool/val/test partition, a lab/unl_pool partition of pool,
+    labels matching the HDF5 labels, and geometric group IDs that never cross partitions.
+    Returns (indices, provenance) for the run manifest and output folder.
+    """
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+    with open(validation_path, "r", encoding="utf-8") as f:
+        validation = json.load(f)
+
+    expected_sha = manifest.get("dataset_sha256")
+    if not isinstance(expected_sha, str) or len(expected_sha) != 64:
+        raise ValueError("corrected split manifest has no valid dataset_sha256")
+    actual_dataset = file_fingerprint(dataset_path)
+    if actual_dataset["sha256"].lower() != expected_sha.lower():
+        raise ValueError("dataset SHA-256 does not match corrected split: expected %s, got %s" %
+                         (expected_sha, actual_dataset["sha256"]))
+    if validation.get("status") != "PASS_CONSERVATIVE_GEOMETRIC_GUARD":
+        raise ValueError("corrected split validation report is not PASS_CONSERVATIVE_GEOMETRIC_GUARD")
+    required = ("labels", "group_id", "pool", "lab", "unl_pool", "val", "test")
+    with np.load(npz_path, allow_pickle=False) as stored:
+        missing = sorted(set(required) - set(stored.files))
+        if missing:
+            raise ValueError("corrected split NPZ is missing arrays: %s" % missing)
+        arrays = {key: np.asarray(stored[key]) for key in required}
+
+    labels = np.asarray(labels, dtype=np.int64)
+    if arrays["labels"].shape != labels.shape or not np.array_equal(arrays["labels"], labels):
+        raise ValueError("labels in corrected split do not match the labelled HDF5 file")
+    n = len(labels)
+    if (arrays["group_id"].shape != (n,) or
+            not np.issubdtype(arrays["group_id"].dtype, np.integer) or
+            np.any(arrays["group_id"] < 0)):
+        raise ValueError("corrected split group_id must be one integer per dataset image")
+    groups, group_counts = np.unique(arrays["group_id"], return_counts=True)
+    expected_components = int(validation.get("n_components", -1))
+    if len(groups) != expected_components or len(groups) != int(manifest.get("n_group_components", -2)):
+        raise ValueError("corrected split group IDs do not match validation component count")
+    if int(np.count_nonzero(group_counts > 1)) != int(validation.get("n_multi_image_groups", -1)):
+        raise ValueError("corrected split group IDs do not match validation multi-image group count")
+    if int(manifest.get("n_pairs", -1)) != int(validation.get("n_pairs_checked", -2)):
+        raise ValueError("corrected split manifest and validation report disagree on overlap pair count")
+
+    ix = {key: arrays[key] for key in ("pool", "lab", "unl_pool", "val", "test")}
+    for name, idx in ix.items():
+        if idx.ndim != 1 or not np.issubdtype(idx.dtype, np.integer):
+            raise ValueError("corrected split %s indices must be a 1-D integer array" % name)
+        if len(idx) == 0 or np.any(idx < 0) or np.any(idx >= n) or len(np.unique(idx)) != len(idx):
+            raise ValueError("corrected split %s indices are empty, out of range, or duplicated" % name)
+
+    pool, val, test = (set(ix[k].tolist()) for k in ("pool", "val", "test"))
+    if pool & val or pool & test or val & test:
+        raise ValueError("corrected split pool/val/test partitions overlap")
+    if pool | val | test != set(range(n)):
+        raise ValueError("corrected split does not cover every dataset image exactly once")
+    lab, unl_pool = set(ix["lab"].tolist()), set(ix["unl_pool"].tolist())
+    if lab & unl_pool or lab | unl_pool != pool:
+        raise ValueError("corrected split lab and unl_pool must partition pool exactly")
+
+    group_owner = {}
+    for part in ("pool", "val", "test"):
+        for group in np.unique(arrays["group_id"][ix[part]]):
+            group = int(group)
+            prior = group_owner.setdefault(group, part)
+            if prior != part:
+                raise ValueError("corrected split geometric group %d crosses %s and %s" %
+                                 (group, prior, part))
+
+    sizes = {name: int(len(ix[name])) for name in ("pool", "lab", "unl_pool", "val", "test")}
+    expected_sizes = manifest.get("corrected_sizes")
+    if expected_sizes is not None and sizes != {k: int(expected_sizes[k]) for k in sizes}:
+        raise ValueError("corrected split sizes do not match the split manifest")
+    if sizes != {k: int(validation["sizes"][k]) for k in sizes}:
+        raise ValueError("corrected split sizes do not match the validation report")
+    reported_counts = validation.get("class_counts", {})
+    for name, idx in ix.items():
+        actual_counts = np.bincount(labels[idx], minlength=NCLASSES).astype(int).tolist()
+        if actual_counts != [int(x) for x in reported_counts.get(name, [])]:
+            raise ValueError("corrected split %s class counts do not match the validation report" % name)
+
+    provenance = {
+        "dataset_sha256_expected": expected_sha.lower(),
+        "dataset_fingerprint": actual_dataset,
+        "split_npz": file_fingerprint(npz_path),
+        "split_manifest": file_fingerprint(manifest_path),
+        "split_validation": file_fingerprint(validation_path),
+        "validation_status": validation["status"],
+        "geometric_pairs_checked": int(validation.get("n_pairs_checked", 0)),
+        "sizes": sizes,
+    }
+    return ix, provenance
+
+
 def array_fingerprint(a):
     a = np.ascontiguousarray(a)
     h = hashlib.sha256()
@@ -191,12 +294,12 @@ def array_fingerprint(a):
     return h.hexdigest()
 
 
-def dataset_identity(labeled_path, unlabeled_path, labels, ix, unl_pool_idx):
-    """Dataset identity for the manifest: SHA-256 of both HDF5 files (None if there is no unlabelled
-    file) plus hashes of the labels and of the (sorted) index sets that define the partition."""
+def dataset_identity(labeled_path, unlabeled_path, labels, ix, unl_pool_idx,
+                     labeled_fingerprint=None):
+    """Dataset identity: HDF5 fingerprints plus hashes of labels and sorted split indices."""
     have_unl = bool(unlabeled_path) and os.path.exists(unlabeled_path)
     return {
-        "labeled_file": file_fingerprint(labeled_path),
+        "labeled_file": labeled_fingerprint or file_fingerprint(labeled_path),
         "unlabeled_file": file_fingerprint(unlabeled_path) if have_unl else None,
         "labels": array_fingerprint(np.asarray(labels, np.int64)),
         "idx_pool": array_fingerprint(np.sort(ix["pool"])),

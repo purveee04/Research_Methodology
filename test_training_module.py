@@ -393,8 +393,9 @@ def make_identity(tmpdir, with_unlabeled=True, labels=None, tweak=None, split_se
 
 def make_manifest(identity, **overrides):
     cfg = tm.TrainConfig(**overrides.pop("cfg", {}))
-    ds = tm.make_data_settings(split_seed=16, test_frac=0.1, val_frac=0.1, label_frac=0.125,
-                               include_labelled_in_unlabeled=False, no_pool_unlabeled=False)
+    ds = tm.make_data_settings(split_source="member3_corrected_npz",
+                               include_external_cutouts=False,
+                               include_labelled_in_unlabeled=False)
     ds.update(overrides.pop("data", {}))
     return tm.build_manifest(cfg, ds, identity, info={"overlap_check": {"mode": "x"}})
 
@@ -457,6 +458,62 @@ class TestFingerprints(unittest.TestCase):
         self.assertEqual(a, b)
 
 
+class TestCorrectedSplitLoader(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.labels = np.arange(20, dtype=np.int64) % 10
+        self.dataset = os.path.join(self.tmp.name, "galaxy10.h5")
+        _write(self.dataset, b"synthetic Galaxy10 file bytes")
+        self.npz = os.path.join(self.tmp.name, "corrected.npz")
+        self.manifest = os.path.join(self.tmp.name, "manifest.json")
+        self.validation = os.path.join(self.tmp.name, "validation.json")
+        self.arrays = {
+            "labels": self.labels.copy(),
+            "group_id": np.arange(20, dtype=np.int64),
+            "pool": np.arange(0, 10, dtype=np.int64),
+            "lab": np.arange(0, 5, dtype=np.int64),
+            "unl_pool": np.arange(5, 10, dtype=np.int64),
+            "val": np.arange(10, 15, dtype=np.int64),
+            "test": np.arange(15, 20, dtype=np.int64),
+        }
+        self.sizes = {k: len(self.arrays[k]) for k in ("pool", "lab", "unl_pool", "val", "test")}
+        self.counts = {k: np.bincount(self.labels[self.arrays[k]], minlength=10).tolist()
+                       for k in self.sizes}
+        self.write_artifacts()
+
+    def write_artifacts(self):
+        np.savez(self.npz, **self.arrays)
+        manifest = {"dataset_sha256": tm.file_fingerprint(self.dataset)["sha256"],
+                    "n_group_components": 20, "n_pairs": 0,
+                    "corrected_sizes": self.sizes}
+        validation = {"status": "PASS_CONSERVATIVE_GEOMETRIC_GUARD",
+                      "n_components": 20, "n_multi_image_groups": 0,
+                      "n_pairs_checked": 0, "sizes": self.sizes,
+                      "class_counts": self.counts}
+        for path, data in ((self.manifest, manifest), (self.validation, validation)):
+            with open(path, "w", encoding="utf-8") as handle:
+                json.dump(data, handle)
+
+    def test_loads_a_complete_disjoint_corrected_split_and_provenance(self):
+        ix, provenance = tm.load_corrected_split(
+            self.npz, self.manifest, self.validation, self.labels, self.dataset)
+        self.assertEqual({k: len(v) for k, v in ix.items()}, self.sizes)
+        self.assertEqual(provenance["validation_status"], "PASS_CONSERVATIVE_GEOMETRIC_GUARD")
+        self.assertEqual(provenance["dataset_sha256_expected"], tm.file_fingerprint(self.dataset)["sha256"])
+
+    def test_rejects_dataset_checksum_mismatch(self):
+        _write(self.dataset, b"changed dataset bytes")
+        with self.assertRaisesRegex(ValueError, "dataset SHA-256 does not match"):
+            tm.load_corrected_split(self.npz, self.manifest, self.validation, self.labels, self.dataset)
+
+    def test_rejects_an_overlapping_partition(self):
+        self.arrays["test"] = self.arrays["val"].copy()
+        np.savez(self.npz, **self.arrays)
+        with self.assertRaisesRegex(ValueError, "partitions overlap"):
+            tm.load_corrected_split(self.npz, self.manifest, self.validation, self.labels, self.dataset)
+
+
 class TestResumeManifest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -501,15 +558,11 @@ class TestResumeManifest(unittest.TestCase):
             self.assertIn("identity." + name, self.refuses(new))
 
     def test_named_review_items_via_real_builders(self):
-        """split seed/fractions, label fraction, training seed, lr settings, augmentation, pool options,
-        experiment, dataset files: each real change is refused."""
+        """Split source, cutout/label inclusion, training settings and files are resume guarded."""
         cases = {
-            "data.split_seed": make_manifest(self.identity, data={"split_seed": 17}),
-            "data.test_frac": make_manifest(self.identity, data={"test_frac": 0.2}),
-            "data.val_frac": make_manifest(self.identity, data={"val_frac": 0.2}),
-            "data.label_frac": make_manifest(self.identity, data={"label_frac": 0.25}),
+            "data.split_source": make_manifest(self.identity, data={"split_source": "other_split"}),
+            "data.include_external_cutouts": make_manifest(self.identity, data={"include_external_cutouts": True}),
             "data.include_labelled_in_unlabeled": make_manifest(self.identity, data={"include_labelled_in_unlabeled": True}),
-            "data.no_pool_unlabeled": make_manifest(self.identity, data={"no_pool_unlabeled": True}),
             "config.seed": make_manifest(self.identity, cfg={"seed": 1}),
             "config.lr": make_manifest(self.identity, cfg={"lr": 2e-4}),
             "config.min_lr": make_manifest(self.identity, cfg={"min_lr": 1e-7}),
@@ -537,7 +590,7 @@ class TestResumeManifest(unittest.TestCase):
 
     def test_missing_keys_in_saved_manifest_and_unknown_format_are_refused(self):
         old = copy.deepcopy(self.m)
-        del old["data"]["split_seed"]
+        del old["data"]["split_source"]
         with self.assertRaises(tm.ResumeError):
             tm.check_resume_compatible(old, self.m)
         for bad in ({"format": 1}, {}, None, "junk"):
@@ -545,9 +598,10 @@ class TestResumeManifest(unittest.TestCase):
                 tm.check_resume_compatible(bad, self.m)
 
     def test_every_difference_is_listed(self):
-        new = make_manifest(self.identity, cfg={"seed": 5, "sigma": 0.4}, data={"split_seed": 3})
+        new = make_manifest(self.identity, cfg={"seed": 5, "sigma": 0.4},
+                            data={"split_source": "other_split"})
         msg = self.refuses(new)
-        for k in ("config.seed", "config.sigma", "data.split_seed"):
+        for k in ("config.seed", "config.sigma", "data.split_source"):
             self.assertIn(k, msg)
 
     def test_builders_reject_incomplete_inputs(self):

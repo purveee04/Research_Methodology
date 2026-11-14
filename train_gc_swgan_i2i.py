@@ -9,15 +9,19 @@ NEW file. gc_swgan_fixed.py is not imported, run or modified. Defaults write to 
 Pieces COPIED FROM gc_swgan_fixed.py (unchanged logic): load_h5_images, ece_score, brier_score,
 full_metrics, predict_probs, the checkpoint/resume/logging pattern.
 
-    python train_gc_swgan_i2i.py --experiment A --img-size 96 --steps 10000 --name i2i_A_s0 ...
-    python train_gc_swgan_i2i.py --experiment B --lambda-rec <TEAM VALUE> ... --name i2i_B_s0
+    python train_gc_swgan_i2i.py --experiment A \\
+        --split-npz artifacts/member3/corrected_split/corrected_split_indices.npz \\
+        --split-manifest artifacts/member3/corrected_split/corrected_split_manifest.json \\
+        --split-validation artifacts/member3/corrected_split/corrected_split_validation.json ...
+    python train_gc_swgan_i2i.py --experiment B --lambda-rec <TEAM VALUE> [same split arguments] ...
 
 Every value marked PROVISIONAL in training_module.PROVISIONAL is printed at launch and saved in the
 checkpoint manifest. None of them is team- or instructor-approved.
 
 Resume safety: <ckpt-dir>/<name>/manifest.json records the full config, the data-pipeline settings and
-the dataset identity (SHA-256 of both HDF5 files + hashes of labels and index sets). A resume is refused
-if ANY of them differs. Hashing the two HDF5 files costs roughly a minute at each launch.
+the dataset identity (SHA-256 of the labelled HDF5 file, optional external HDF5, labels and split
+indices). A resume is refused if ANY of them differs. The corrected split checksum is compared before
+training.
 """
 import os
 import sys
@@ -28,6 +32,7 @@ os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "1")
 import argparse
 import csv
 import json
+import shutil
 import time
 
 import numpy as np
@@ -50,13 +55,20 @@ def parse_args(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     p.add_argument("--name", default="gc_swgan_i2i_run")
     p.add_argument("--labeled-h5", default="./Galaxy10_DECaLS.h5")
-    p.add_argument("--unlabeled-h5", default="./decals_images.h5")
+    p.add_argument("--split-npz", required=True,
+                   help="Member 3 corrected_split_indices.npz; random splits are not used")
+    p.add_argument("--split-manifest", required=True,
+                   help="matching corrected_split_manifest.json with expected Galaxy10 SHA-256")
+    p.add_argument("--split-validation", required=True,
+                   help="matching corrected_split_validation.json")
+    p.add_argument("--confirm-split-review", action="store_true",
+                   help="required only after the team completes its final review of the candidate split")
     p.add_argument("--out-dir", default="./outputs_i2i")
     p.add_argument("--ckpt-dir", default="./checkpoints_i2i")
     p.add_argument("--experiment", required=True, choices=list(tm.EXPERIMENTS),
                    help="A: adversarial generator loss only | B: + lambda_rec * L1(clean, G(noisy))")
     p.add_argument("--lambda-rec", type=float, default=None,
-                   help="reconstruction weight; REQUIRED for B (no default), must be omitted for A")
+                   help="reconstruction weight; B defaults to the team-agreed 1.0, must be omitted for A")
     p.add_argument("--img-size", type=int, default=96, choices=list(tm.SUPPORTED_IMG_SIZES))  # PROVISIONAL
     p.add_argument("--steps", type=int, default=10000)                                        # PROVISIONAL
     p.add_argument("--n-unlabeled", type=int, default=20)                                     # PROVISIONAL
@@ -74,22 +86,7 @@ def parse_args(argv=None):
     p.add_argument("--lr", type=float, default=1e-4)
     p.add_argument("--min-lr", type=float, default=1e-6)
     p.add_argument("--decay", type=float, default=1.000004)
-    p.add_argument("--test-frac", type=float, default=0.1)
-    p.add_argument("--val-frac", type=float, default=0.1)
-    p.add_argument("--label-frac", type=float, default=0.125,                                 # PROVISIONAL
-                   help="fraction of the TRAIN POOL that keeps its labels (baseline run used 0.125)")
-    p.add_argument("--split-seed", type=int, default=16, help="fixed across runs [baseline]")
     p.add_argument("--seed", type=int, default=0)
-    p.add_argument("--include-labelled-in-unlabeled", action="store_true",
-                   help="reproduce the baseline pool (labelled images also in the unlabelled stream)")
-    p.add_argument("--no-pool-unlabeled", action="store_true",
-                   help="unlabelled data = extra cutouts only")
-    p.add_argument("--unlabeled-pixscale", type=float, default=None,
-                   help="arcsec/pixel used when decals_images.h5 was made (kaggle_prep_data.py --pixscale, or\n"
-                        "the median Galaxy10 pxscale it printed). The file does not store it. Enables the\n"
-                        "cutout-FOOTPRINT overlap check; without it only a LIMITED centre-match check runs.")
-    p.add_argument("--skip-overlap-check", "--skip-position-check", dest="skip_overlap_check",
-                   action="store_true", help="skip the sky-overlap check of the extra cutouts (not advised)")
     p.add_argument("--save-every", type=int, default=200)
     p.add_argument("--eval-every", type=int, default=500)
     p.add_argument("--log-every", type=int, default=50)
@@ -101,6 +98,8 @@ def parse_args(argv=None):
 
 def make_config(args):
     try:
+        if args.experiment == "B" and args.lambda_rec is None:
+            args.lambda_rec = 1.0
         return tm.TrainConfig(
             experiment=args.experiment, img_size=args.img_size, n_unlabeled=args.n_unlabeled,
             n_labeled=args.n_labeled, sigma=args.sigma, lambda_rec=args.lambda_rec,
@@ -114,10 +113,9 @@ def make_config(args):
 
 
 def make_data_settings(args):
-    return tm.make_data_settings(
-        split_seed=args.split_seed, test_frac=args.test_frac, val_frac=args.val_frac,
-        label_frac=args.label_frac, include_labelled_in_unlabeled=args.include_labelled_in_unlabeled,
-        no_pool_unlabeled=args.no_pool_unlabeled)
+    return tm.make_data_settings(split_source="member3_corrected_npz",
+                                 include_external_cutouts=False,
+                                 include_labelled_in_unlabeled=False)
 
 
 # --------------------------------------------------------------------------- #
@@ -143,55 +141,50 @@ def _read_optional(f, key):
 
 
 def run_overlap_check(args, g_ra, g_dec, g_px, ix, extra_meta):
-    """Sky-overlap check of the EXTRA cutouts against Galaxy10 (validation+test galaxies are the hard
-    failure). Returns the result dict; the caller prints its message and exits if ok is False."""
-    if args.skip_overlap_check:
-        return {"mode": "skipped", "ok": True,
-                "message": "WARNING: sky-overlap check SKIPPED by --skip-overlap-check. Only the exact "
-                           "duplicate-image check ran; nothing here says the extra cutouts are free of "
-                           "validation/test galaxies."}
-    if extra_meta is None:
-        return {"mode": "not_applicable", "ok": True,
-                "message": "No extra unlabelled cutout file: sky-overlap check not applicable."}
-    e_ra, e_dec, e_px = extra_meta
-    if e_ra is None or e_dec is None or g_ra is None or g_dec is None:
-        return {"mode": "unavailable", "ok": True,
-                "message": "WARNING: ra/dec missing in an h5 file, so NO sky-overlap check could run. Only the "
-                           "exact duplicate-image check ran; leakage of validation/test galaxies is NOT ruled out."}
-    if e_px is not None:
-        px, src = e_px, "read from the unlabelled file"
-    elif args.unlabeled_pixscale is not None:
-        px, src = args.unlabeled_pixscale, "supplied with --unlabeled-pixscale, not verified against the file"
-    else:
-        px, src = None, None
-    return tm.check_cutout_overlap(
-        e_ra, e_dec, g_ra, g_dec, protected_idx=np.concatenate([ix["val"], ix["test"]]),
-        other_idx=ix["pool"], extra_pxscale=px, extra_pxscale_source=src, g_pxscale=g_px)
+    """External cutouts are excluded, so Member 3's validated fixed split is authoritative."""
+    return {"mode": "not_applicable", "ok": True,
+            "message": "External cutouts are excluded; the corrected Galaxy10 split handles sky-overlap groups."}
 
 
 def build_data(args, want_identity=True):
-    """Returns (TrainingData, eval_arrays, identity_or_None, overlap_result). eval_arrays (val/test) live in
-    a SEPARATE dict that is never passed to TrainBatchSource; they are used only for evaluation."""
+    """Load the corrected fixed split and return its provenance with train/evaluation data.
+
+    eval_arrays (val/test) live in a SEPARATE dict that is never passed to TrainBatchSource; they are
+    used only for evaluation.
+    """
     with h5py.File(args.labeled_h5, "r") as f:
         labels = np.array(f["ans"]).astype(np.int64)
         g_ra, g_dec, g_px = (_read_optional(f, k) for k in ("ra", "dec", "pxscale"))
+    try:
+        ix, split_provenance = tm.load_corrected_split(
+            args.split_npz, args.split_manifest, args.split_validation, labels, args.labeled_h5)
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as e:
+        sys.exit("Corrected split validation failed; refusing to train: %s" % e)
+    if 11475 not in set(ix["unl_pool"].tolist()):
+        sys.exit("The agreed corrected split must retain image 11475 in the unlabelled training pool.")
+    with h5py.File(args.labeled_h5, "r") as f:
+        image_11475 = np.asarray(f["images"][11475])
+    image_11475_doc = {
+        "index": 11475,
+        "class": int(labels[11475]),
+        "partition": "unl_pool",
+        "policy": "Retain in the unlabelled training pool, per the team's 13 Nov 2026 decision; document its pixel values.",
+        "raw_shape": list(image_11475.shape),
+        "raw_min": int(image_11475.min()),
+        "raw_max": int(image_11475.max()),
+        "raw_unique_pixel_values": int(np.unique(image_11475).size),
+    }
+    split_provenance["image_11475"] = image_11475_doc
+    print("image 11475 retained: class %d, min %d, max %d, unique values %d" % (
+        image_11475_doc["class"], image_11475_doc["raw_min"], image_11475_doc["raw_max"],
+        image_11475_doc["raw_unique_pixel_values"]))
     x_all = load_h5_images(args.labeled_h5, "images", args.img_size)
-    ix = tm.split_indices(labels, args.test_frac, args.val_frac, args.label_frac, args.split_seed)
-    unl_idx = tm.unlabeled_pool_indices(ix["pool"], ix["lab"], args.include_labelled_in_unlabeled)
+    unl_idx = ix["unl_pool"]
 
-    parts, extra_meta, have_extra = [], None, os.path.exists(args.unlabeled_h5)
-    if not args.no_pool_unlabeled and len(unl_idx):
+    parts, extra_meta, have_extra = [], None, False
+    if len(unl_idx):
         parts.append(x_all[unl_idx])
-    if have_extra:
-        extra = load_h5_images(args.unlabeled_h5, "images", args.img_size)
-        parts.append(extra)
-        with h5py.File(args.unlabeled_h5, "r") as f:
-            extra_meta = tuple(_read_optional(f, k) for k in ("ra", "dec", "pxscale"))
-        for arr in extra_meta[:2]:
-            if arr is not None and len(arr) != len(extra):
-                sys.exit("ra/dec length does not match the number of images in %s" % args.unlabeled_h5)
-    else:
-        print("NOTE: %s not found -> unlabelled data = train-pool images only" % args.unlabeled_h5)
+    print("NOTE: external cutouts are excluded -> unlabelled data uses corrected Galaxy10 train pool only")
     if not parts:
         sys.exit("No unlabelled data available.")
 
@@ -214,12 +207,17 @@ def build_data(args, want_identity=True):
     identity = None
     if want_identity:
         print("hashing dataset files for the run manifest (SHA-256) ...", flush=True)
-        identity = tm.dataset_identity(args.labeled_h5, args.unlabeled_h5 if have_extra else None,
-                                       labels, ix, unl_idx)
+        identity = tm.dataset_identity(args.labeled_h5, None,
+                                       labels, ix, unl_idx,
+                                       labeled_fingerprint=split_provenance["dataset_fingerprint"])
     print("labelled train: %d | unlabelled train: %d | val: %d | test: %d" % (
         len(train.x_lab), len(train.x_unl), len(eval_data["x_val"]), len(eval_data["x_test"])))
     print("labelled class counts:", np.bincount(train.y_lab, minlength=NCLASSES).tolist())
-    return train, eval_data, identity, overlap
+    print("corrected split: %s | dataset SHA-256: %s" % (
+        split_provenance["validation_status"], split_provenance["dataset_sha256_expected"]))
+    print("corrected split indices: pool %d | labelled %d | unlabelled %d | val %d | test %d" % (
+        len(ix["pool"]), len(ix["lab"]), len(ix["unl_pool"]), len(ix["val"]), len(ix["test"])))
+    return train, eval_data, identity, overlap, split_provenance
 
 
 # --------------------------------------------------------------------------- #
@@ -293,6 +291,9 @@ def save_sample_grid_and_diagnostics(step, models, cfg, x_fixed_u8, out_dir, dia
 # --------------------------------------------------------------------------- #
 def main():
     args = parse_args()
+    if not args.confirm_split_review:
+        sys.exit("The corrected split is still marked as a candidate pending final team review. "
+                 "Review the split artifacts first; after team signoff, rerun with --confirm-split-review.")
     cfg = make_config(args)
     data_settings = make_data_settings(args)
     OUT = os.path.join(args.out_dir, args.name)
@@ -308,13 +309,17 @@ def main():
             tf.config.experimental.set_memory_growth(g, True)
         except RuntimeError:
             pass
-    print("\nExperiment %s | settings in use (PROVISIONAL = not approved by the team or instructor):" %
-          cfg.experiment)
+    print("\nExperiment %s | settings in use (status shown for each setting):" % cfg.experiment)
     print("\n".join(tm.provisional_report(cfg)))
-    print("  %-22s = %-12s  PROVISIONAL (not approved)" % ("label_frac", args.label_frac))
-    print("  %-22s = %-12s  PROVISIONAL (not approved)\n" % ("steps", args.steps))
+    print("  %-22s = %-12s  PROVISIONAL: full-run step budget pending final team confirmation\n" %
+          ("steps", args.steps))
 
-    train, ev, identity, overlap = build_data(args, want_identity=not args.benchmark)
+    train, ev, identity, overlap, split_provenance = build_data(args, want_identity=not args.benchmark)
+    for source, target in ((args.split_npz, "corrected_split_indices.npz"),
+                           (args.split_manifest, "corrected_split_manifest.json"),
+                           (args.split_validation, "corrected_split_validation.json")):
+        shutil.copy2(source, os.path.join(OUT, target))
+    json.dump(split_provenance, open(os.path.join(OUT, "split_audit.json"), "w"), indent=2)
     models = tm.build_models(cfg)
     trainer = tm.Trainer(models, cfg)
     print("G params: %d | shared trunk params: %d" % (models.gen.count_params(), models.trunk.count_params()))
@@ -339,9 +344,10 @@ def main():
     ckpt = tm.make_checkpoint(models, step_var)         # includes the pseudo-label snapshot if used
     mgr = tf.train.CheckpointManager(ckpt, CKPT, max_to_keep=3)
     state_path, manifest_path = os.path.join(CKPT, "state.json"), os.path.join(CKPT, "manifest.json")
-    state = {"best_val": -1.0, "best_step": 0}
+    state = {"best_val_macro_f1": -1.0, "best_step": 0}
     manifest = tm.build_manifest(cfg, data_settings, identity,
-                                 info={"overlap_check": {k: v for k, v in overlap.items()}})
+                                 info={"overlap_check": {k: v for k, v in overlap.items()},
+                                       "corrected_split": split_provenance})
     resuming = mgr.latest_checkpoint is not None
     try:
         tm.prepare_run_manifest(resuming, manifest_path, manifest)
@@ -403,8 +409,8 @@ def main():
             files["val"].flush()
             print("   VAL acc %.4f | macro-F1 %.4f | bal-acc %.4f" % (
                 m["accuracy"], m["macro_f1"], m["balanced_accuracy"]), flush=True)
-            if m["accuracy"] > state["best_val"]:
-                state = {"best_val": m["accuracy"], "best_step": step}
+            if m["macro_f1"] > state["best_val_macro_f1"]:
+                state = {"best_val_macro_f1": m["macro_f1"], "best_step": step}
                 models.clf.save_weights(os.path.join(CKPT, "best_clf"))
             save_sample_grid_and_diagnostics(step, models, cfg, x_fixed, OUT, dw, files["diagnostics"])
         if step % args.save_every == 0:
@@ -426,8 +432,10 @@ def main():
     # ---- final evaluation: test set touched ONCE ----
     results = {"args": vars(args), "config": cfg.to_dict(), "data_settings": data_settings,
                "dataset_identity": identity, "overlap_check": overlap,
+               "corrected_split": split_provenance,
                "end_status": status, "last_step": last,
-               "best_val_step": state["best_step"], "best_val_acc": state["best_val"]}
+               "best_val_step": state["best_step"],
+               "best_val_macro_f1": state["best_val_macro_f1"]}
     results["final_model"] = full_metrics(predict_probs(models.clf, ev["x_test"]), ev["y_test"])
     if os.path.exists(os.path.join(CKPT, "best_clf.index")):
         models.clf.load_weights(os.path.join(CKPT, "best_clf"))
