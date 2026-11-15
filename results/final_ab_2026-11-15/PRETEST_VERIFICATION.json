@@ -1,0 +1,22 @@
+{
+  "training_code_commit": "25882a893fe9980acc430008d4869b9a411bb3e0",
+  "dataset_sha256": "a75906f8e3eae0150e3c9de48c7dd74faae3a823130e0030d27d6866a8ffbed4",
+  "split_npz_sha256": "1ea636a1cd3df30fdd6b155b06896692198e141d536d28a60899f17955c1ede8",
+  "test_indices_count": 1731,
+  "test_indices_sha256": "f5c0af00ba34565a1813623923ef173284bbc606c177fcd4603a199172196d64",
+  "run_evidence": {
+    "A": {
+      "best_step": 8500,
+      "best_validation_macro_f1": 0.1918,
+      "validation_rows": 20,
+      "loss_rows": 200
+    },
+    "B": {
+      "best_step": 10000,
+      "best_validation_macro_f1": 0.2797,
+      "validation_rows": 20,
+      "loss_rows": 200
+    }
+  },
+  "checked_at_utc": "2026-11-15T18:11:54.425987+00:00"
+}

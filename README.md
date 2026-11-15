@@ -50,19 +50,48 @@ The forward and backward computations were measured over 5 iterations after a wa
 
 Note: This measures Generator forward and backward computations only. It does not include Critic training, optimizer updates or data loading.
 
-### 5. Testing Limitations
+### 5. Generator testing and image-quality review
 
-- Testing was performed using dummy images, not the actual galaxy dataset.
-- The Generator has not yet been trained to perform denoising.
-- Gaussian noise sigma and reconstruction loss weight lambda_rec remain subject to team validation.
-- Actual image quality and denoising performance will be evaluated after integration with the training pipeline.
+The Generator's unit and integration checks were performed at 96×96, including input/output
+shape, Gaussian noise, finite values, and gradient flow through all 28 trainable variables.
+These checks passed, but they establish structural behavior rather than image quality.
+After full A/B training, visual review found image artifacts and no consistent evidence that
+the Generator preserves galaxy morphology or denoises effectively. The selected sample grids
+are available at `results/generator_review/ab_sample_review_contact_sheet.jpg`.
 
-### 6. Next Steps
+### 6. Full A/B and held-out test results (15 November 2026)
 
-- Run short A/B pilots after the integrated trainer and corrected split pass team review.
-- Evaluate generated galaxy images.
-- Compare Experiments A and B.
-- Evaluate denoising performance using validation data.
+Two matched 10,000-step runs completed at 96×96 using the corrected split, seed 0,
+20 unlabelled + 1 labelled example per step, sigma 0.1, pseudo-label threshold 0.95,
+and gradient-penalty weight 10. Experiment A used adversarial loss only; Experiment B
+added L1 reconstruction loss with lambda_rec=1.0. External cutouts were excluded.
+Checkpoint selection used validation macro-F1. Member 3 then evaluated each frozen
+selected classifier once on the same 1,731-image held-out test partition.
+
+| Metric | A | B |
+|---|---:|---:|
+| Selected step (validation macro-F1) | 8,500 (0.1918) | 10,000 (0.2797) |
+| Test accuracy | 0.2577 | 0.3200 |
+| Test macro-F1 | 0.1862 | 0.2689 |
+| Test balanced accuracy | 0.2321 | 0.3030 |
+| Test weighted-F1 | 0.2043 | 0.2898 |
+
+B scored higher on these four test metrics in this matched single-seed experiment.
+This is an observed result, not evidence of a statistically established general effect.
+Pseudo-label acceptance was very low (A: 89/200,000; B: 96/200,000), so the gain
+should not be attributed mainly to pseudo-labelling. B's test ECE was higher than A's
+(0.0569 vs 0.0415); calibration therefore did not improve on every metric.
+
+The Generator's 96×96 structural and gradient checks passed, but Member 1's review of
+the full-run sample grids and diagnostics found artefacts and no consistent evidence
+of denoising or morphology preservation. The evaluation and review artifacts are in
+`results/final_ab_2026-11-15/` and `results/generator_review/`. The final test kit is in
+`docs/member3/final_test_kit/`. The 253 possible geometric-overlap pairs were grouped
+conservatively; they were not all individually confirmed as duplicate galaxies.
+
+No further training or test inference is currently planned. The remaining work is to
+complete the written research report and describe the single-seed, low pseudo-label
+acceptance, modest classification performance, and Generator image-quality limitations.
 
 ## Member 2 – Corrected-Split Training Integration
 

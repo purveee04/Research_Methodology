@@ -1,0 +1,4 @@
+{
+  "test_started_at_utc": "2026-11-15T18:11:55.329462+00:00",
+  "policy": "Single evaluation of frozen A/B selected checkpoints; no tuning"
+}
