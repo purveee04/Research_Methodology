@@ -1,38 +1,39 @@
-# GC-SWGAN Member 3 — Experiment A/B Tracking Handoff
+# GC-SWGAN Member 3 — Experiment Tracking and A/B Evaluation Handoff
 
-**Status (12 November 2026):** Reporting code implemented/tested. The complete A/B experiment results remain **PENDING**.
+**Status (15 November 2026):** Full matched A/B training and one evaluation-only test inference
+per selected classifier are complete. Final evidence is in `../../results/final_ab_2026-11-15/`.
 
-## Provenance and corrected data
-- Input intended: Galaxy10 NoDuplicated, 17,675 images.
-- Reported dataset SHA256: `a75906f8e3eae0150e3c9de48c7dd74faae3a823130e0030d27d6866a8ffbed4`.
-- Corrected split: pool 14,217 (labelled 1,777, unlabelled 12,440); validation 1,727; test 1,731.
-- Conservative split groups potential 256-pixel overlap; 253 candidate pairs and 81 images reassigned. Corrected split and blank image 11475 await team review; extra cutouts excluded.
-- Original smoke test and 96px baseline were not final A/B runs.
+## Verified data and model selection
+- Dataset SHA-256: `a75906f8e3eae0150e3c9de48c7dd74faae3a823130e0030d27d6866a8ffbed4`.
+- Corrected split NPZ SHA-256: `1ea636a1cd3df30fdd6b155b06896692198e141d536d28a60899f17955c1ede8`.
+- Held-out test set: 1,731 images; index SHA-256 recorded in `PRETEST_VERIFICATION.json`.
+- A selected checkpoint: step 8,500, validation macro-F1 0.1918.
+- B selected checkpoint: step 10,000, validation macro-F1 0.2797.
+- Selection used validation macro-F1. Test inference was frozen, evaluation-only, and did not tune parameters.
+- Training code commit: `25882a893fe9980acc430008d4869b9a411bb3e0`.
 
-## Experiment matrix — must be frozen before training
-| Setting | A | B | Evidence/approval |
-|---|---|---|---|
-| Galaxy10 file SHA256 | same | same | Verify at runtime |
-| Corrected split NPZ SHA256 | same | same | Verify at runtime |
-| Split + run seeds | same | same | Confirm |
-| Resolution, steps, batch ratio | same | same | Confirm |
-| Sigma, pseudo threshold/refresh/weight | same | same | Confirm |
-| Optimizers, schedule, gradient penalty | same | same | Confirm |
-| Generator objective | Adversarial only | Adversarial + lambda_rec × L1 | B coefficient must be chosen |
-| External cutouts | Excluded | Excluded | Verify |
-| New model initialization | New/fresh | New/fresh (equivalent seed) | Verify |
+## Test metrics
+| Metric | A | B |
+|---|---:|---:|
+| Accuracy | 0.2577 | 0.3200 |
+| Macro-F1 | 0.1862 | 0.2689 |
+| Balanced accuracy | 0.2321 | 0.3030 |
+| Weighted-F1 | 0.2043 | 0.2898 |
+| ECE | 0.0415 | 0.0569 |
+| Brier score | 0.8135 | 0.8014 |
 
-## Output requested from Member 2
-For **each** completed A/B run: `val.csv`, `loss.csv`, `diagnostics.csv` if generated, final `results.json`, exact config, dataset and split hash verification, selected checkpoint details, code commit, and run outputs folder. Keep A/B separate.
+B scored higher on the four classification metrics in this matched, single-seed experiment.
+This should be described as an observed result, not a statistically established general effect.
+ECE was higher for B. Per-class details and confusion matrices are included in the results directory.
 
-## Reportable vs diagnostic
-- The M3.5 code can produce *diagnostic* curves on provided CSVs even before approval, but will label them DIAGNOSTIC ONLY.
-- To mark a matched validation comparison reportable, all configuration fields must match, approvals must be recorded, and loss equations must pass.
-- Validation results are not final test results; test only after model selection is frozen. Do not invent final scores or use the test set to tune parameters.
+## Limitations
+- Pseudo-label acceptance was low: A 89/200,000 (0.0445%); B 96/200,000 (0.0480%). Do not attribute B's difference mainly to pseudo-labelling.
+- No correct class-4 predictions were made by either model on the test set; per-class errors are substantial.
+- Generator structural and gradient checks passed, but visual and reconstruction diagnostics do not establish effective denoising or morphology preservation.
+- 253 possible sky-footprint overlap pairs were conservatively grouped, not individually confirmed as duplicate galaxies.
+- One seed was used. Further seeds would be needed to estimate variability or establish a general effect.
 
-## Outstanding team decisions
-1. Sign off conservative sky-footprint grouping and image 11475 handling.
-2. Demonstrate Member 2 trainer consumes corrected NPZ, checks dataset SHA256, rejects mismatches, excludes extra cutouts.
-3. Choose resolution (96px vs 192px), full steps, sigma, pseudo-label policies, lambda_rec, checkpoint selection metric and seed policy.
-4. Complete matched A/B experiments, save logs/checkpoints.
-5. Generate real validation comparison and final held-out test evaluation under approved protocol.
+## Reproduction assets
+- Final comparison, per-class CSV, full JSON results, pre-test verification, test-start record, and plots: `../../results/final_ab_2026-11-15/`.
+- Evaluation-only Kaggle notebook and script: `final_test_kit/`.
+- Dataset and large trained checkpoints are not stored in Git. Retain the dataset in its approved storage and checkpoints in Kaggle/team artifact storage.
